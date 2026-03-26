@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; script-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'none';">
+<meta http-equiv="X-Content-Type-Options" content="nosniff">
+<meta http-equiv="X-Frame-Options" content="DENY">
+<meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
+<meta name="description" content="Psive — o sistema operacional do psicólogo autônomo.">
+<title>Psive</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Syne:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+:root{--ease:cubic-bezier(0.16,1,0.3,1);}
+
+[data-theme="dark"]{
+  --bg:#070A08;
+  --bg2:#0C100D;
+  --bg3:#111614;
+  --bg4:#181E1A;
+  --line:rgba(78,160,110,0.1);
+  --line2:rgba(78,160,110,0.22);
+  --text:#D8E8DC;
+  --text2:#7A9882;
+  --text3:#364D3C;
+  --ac:#4EA06E;
+  --ac2:#3A7D54;
+  --ac3:#275439;
+  --acg:rgba(78,160,110,0.06);
+  --acm:rgba(78,160,110,0.12);
+}
+[data-theme="light"]{
+  --bg:#F3F6F3;
+  --bg2:#EAF0EB;
+  --bg3:#DFE9E0;
+  --bg4:#D2E2D4;
+  --line:rgba(30,100,55,0.1);
+  --line2:rgba(30,100,55,0.2);
+  --text:#0D1C12;
+  --text2:#3A6048;
+  --text3:#7A9E86;
+  --ac:#236E44;
+  --ac2:#1A5533;
+  --ac3:#0E3B22;
+  --acg:rgba(30,100,55,0.05);
+  --acm:rgba(30,100,55,0.1);
+}
+
+*{cursor:none!important;}
+#cd{position:fixed;top:0;left:0;z-index:9999;pointer-events:none;width:6px;height:6px;background:var(--ac);border-radius:50%;transform:translate(-50%,-50%);mix-blend-mode:screen;transition:transform .1s;}
+#cr{position:fixed;top:0;left:0;z-index:9998;pointer-events:none;width:28px;height:28px;border:1px solid rgba(78,160,110,0.3);border-radius:50%;transform:translate(-50%,-50%);transition:width .3s var(--ease),height .3s var(--ease),border-color .3s;}
+.tr{position:fixed;z-index:9997;pointer-events:none;border-radius:50%;transform:translate(-50%,-50%);background:var(--ac);mix-blend-mode:screen;}
+
+body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;font-weight:400;transition:background .4s,color .4s;}
+
+/* grain */
+body::after{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.028;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-size:140px;}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:1.6rem 4.5rem;transition:background .4s,border-color .4s;}
+nav.s{background:rgba(7,10,8,0.88);backdrop-filter:blur(22px);border-bottom:1px solid var(--line);}
+[data-theme="light"] nav.s{background:rgba(243,246,243,0.9);}
+.logo{font-family:'EB Garamond',serif;font-size:1.5rem;font-weight:400;letter-spacing:.04em;color:var(--text);}
+.logo i{color:var(--ac);font-style:italic;}
+.nav-r{display:flex;align-items:center;gap:2.5rem;}
+.nav-links{display:flex;gap:2.2rem;}
+.nav-links a{font-size:.7rem;font-weight:500;letter-spacing:.14em;text-transform:uppercase;text-decoration:none;color:var(--text3);transition:color .2s;}
+.nav-links a:hover{color:var(--ac);}
+.tbtn{background:none;border:1px solid var(--line2);border-radius:2px;padding:.38rem .85rem;font-family:'Syne',sans-serif;font-size:.65rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--text2);transition:all .2s;}
+.tbtn:hover{border-color:var(--ac);color:var(--ac);}
+.ncta{font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;text-decoration:none;color:var(--bg);background:var(--ac);padding:.55rem 1.5rem;border-radius:2px;transition:background .2s,transform .2s;}
+.ncta:hover{background:var(--ac2);transform:translateY(-1px);}
+
+/* HERO */
+.hero{min-height:100vh;position:relative;display:flex;flex-direction:column;justify-content:flex-end;padding:0 4.5rem 6rem;overflow:hidden;}
+
+/* background vertical rule lines */
+.vrules{position:absolute;inset:0;pointer-events:none;display:flex;justify-content:space-between;padding:0 4.5rem;}
+.vrule{width:1px;height:100%;background:var(--line);opacity:.6;}
+
+/* orbs */
+.orb{position:absolute;border-radius:50%;pointer-events:none;filter:blur(110px);}
+.o1{width:650px;height:650px;top:-180px;right:-150px;background:radial-gradient(circle,rgba(78,160,110,.18) 0%,transparent 70%);animation:d1 18s ease-in-out infinite alternate;}
+.o2{width:400px;height:400px;bottom:0;left:-80px;background:radial-gradient(circle,rgba(78,160,110,.08) 0%,transparent 70%);animation:d2 22s ease-in-out infinite alternate;}
+@keyframes d1{from{transform:translate(0,0)}to{transform:translate(35px,20px)}}
+@keyframes d2{from{transform:translate(0,0)}to{transform:translate(-20px,30px)}}
+
+.hero-eyebrow{font-size:.65rem;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:var(--ac);margin-bottom:1.6rem;opacity:0;animation:fu 1s var(--ease) .2s forwards;}
+
+.hero-h1{font-family:'EB Garamond',serif;font-size:clamp(4rem,9vw,8.5rem);font-weight:400;line-height:.92;letter-spacing:-.02em;color:var(--text);max-width:1000px;margin-bottom:0;opacity:0;animation:fu 1.1s var(--ease) .35s forwards;}
+.hero-h1 em{font-style:italic;color:var(--ac);}
+.hero-h1 .ind{padding-left:8rem;}
+
+/* mission statement — the brand meaning */
+.mission-line{position:absolute;top:50%;right:4.5rem;transform:translateY(-50%);max-width:280px;opacity:0;animation:fi 1s var(--ease) 1.1s forwards;}
+.mission-rule{width:24px;height:1px;background:var(--ac);margin-bottom:1.2rem;}
+.mission-text{font-family:'EB Garamond',serif;font-size:1.05rem;font-weight:400;font-style:italic;line-height:1.75;color:var(--text2);}
+.mission-word{font-style:normal;font-weight:500;color:var(--ac);}
+
+.hero-bottom{display:flex;align-items:flex-end;justify-content:space-between;margin-top:4rem;opacity:0;animation:fu 1s var(--ease) .8s forwards;}
+.hero-sub{font-size:.9rem;font-weight:400;line-height:1.85;color:var(--text2);max-width:400px;}
+.hero-actions{display:flex;gap:1rem;align-items:center;}
+.btnp{font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;text-decoration:none;color:var(--bg);background:var(--ac);padding:.9rem 2.2rem;border-radius:2px;transition:background .2s,transform .2s,box-shadow .2s;box-shadow:0 0 32px rgba(78,160,110,.18);}
+.btnp:hover{background:var(--ac2);transform:translateY(-2px);box-shadow:0 0 50px rgba(78,160,110,.3);}
+.btng{font-size:.72rem;font-weight:400;letter-spacing:.1em;text-transform:uppercase;text-decoration:none;color:var(--text3);border-bottom:1px solid var(--line2);padding-bottom:.1rem;transition:color .2s,border-color .2s;}
+.btng:hover{color:var(--ac);border-color:var(--ac);}
+
+.scroll-hint{font-size:.62rem;letter-spacing:.18em;text-transform:uppercase;color:var(--text3);display:flex;align-items:center;gap:.6rem;}
+.sh-line{width:32px;height:1px;background:var(--text3);}
+
+@keyframes fu{from{opacity:0;transform:translateY(26px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fi{from{opacity:0}to{opacity:1}}
+
+/* MEANING SECTION — brand story */
+.meaning{padding:10rem 4.5rem;display:grid;grid-template-columns:1fr 1fr;gap:8rem;align-items:center;border-top:1px solid var(--line);}
+.meaning-left{}
+.meaning-label{font-size:.62rem;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:var(--ac);margin-bottom:2rem;}
+.meaning-word{font-family:'EB Garamond',serif;font-size:clamp(3.5rem,7vw,6rem);font-weight:400;line-height:1;color:var(--text);margin-bottom:.6rem;}
+.meaning-phonetic{font-family:'EB Garamond',serif;font-size:1.1rem;font-style:italic;color:var(--text3);margin-bottom:2.5rem;}
+.meaning-def{display:flex;flex-direction:column;gap:1.4rem;}
+.def-row{display:grid;grid-template-columns:auto 1fr;gap:1.6rem;align-items:start;}
+.def-num{font-size:.65rem;font-weight:700;letter-spacing:.1em;color:var(--ac);margin-top:.2rem;}
+.def-text{font-family:'EB Garamond',serif;font-size:1.15rem;font-weight:400;line-height:1.7;color:var(--text2);}
+.def-text em{font-style:italic;color:var(--text);}
+.meaning-right{}
+.meaning-mission{border-left:1px solid var(--line2);padding-left:3rem;}
+.mm-title{font-size:.62rem;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:var(--text3);margin-bottom:1.8rem;}
+.mm-p{font-family:'EB Garamond',serif;font-size:1.25rem;font-weight:400;line-height:1.8;color:var(--text2);margin-bottom:1.5rem;}
+.mm-p em{font-style:italic;color:var(--text);}
+.mm-rule{width:40px;height:1px;background:var(--ac);margin-top:2.5rem;}
+
+/* MARQUEE */
+.mq-wrap{padding:1.8rem 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--bg2);overflow:hidden;}
+.mq-track{display:flex;gap:0;width:max-content;animation:mq 32s linear infinite;}
+.mq-item{font-family:'EB Garamond',serif;font-size:1rem;font-weight:400;font-style:italic;color:var(--text3);white-space:nowrap;padding:0 3rem;}
+.mq-sep{width:1px;height:14px;background:var(--line2);align-self:center;flex-shrink:0;}
+@keyframes mq{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* SECTION BASE */
+section{position:relative;z-index:1;}
+.wrap{max-width:1200px;margin:0 auto;padding:0 4.5rem;}
+.slabel{font-size:.62rem;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:var(--ac);display:block;margin-bottom:1.6rem;}
+.sh{font-family:'EB Garamond',serif;font-size:clamp(2.4rem,4.5vw,3.8rem);font-weight:400;line-height:1.08;color:var(--text);}
+.sh em{font-style:italic;color:var(--ac);}
+
+/* PAIN — editorial layout, no cards */
+.pain{padding:9rem 0;border-top:1px solid var(--line);}
+.pain-layout{display:grid;grid-template-columns:1fr 2fr;gap:6rem;margin-top:5rem;align-items:start;}
+.pain-left{}
+.pain-aside{font-family:'EB Garamond',serif;font-size:1.1rem;font-style:italic;line-height:1.8;color:var(--text2);max-width:260px;}
+.pain-items{display:flex;flex-direction:column;}
+.pain-item{padding:2.2rem 0;border-bottom:1px solid var(--line);display:grid;grid-template-columns:3.5rem 1fr;gap:2rem;align-items:start;transition:background .3s;}
+.pain-item:first-child{border-top:1px solid var(--line);}
+.pain-item:hover .pain-n{color:var(--ac);}
+.pain-n{font-family:'EB Garamond',serif;font-size:1.4rem;font-weight:400;color:var(--text3);line-height:1;padding-top:.3rem;transition:color .3s;}
+.pain-body{}
+.pain-t{font-size:.95rem;font-weight:500;color:var(--text);margin-bottom:.6rem;letter-spacing:.01em;}
+.pain-d{font-family:'EB Garamond',serif;font-size:1.05rem;font-weight:400;line-height:1.75;color:var(--text2);}
+
+/* FEATURES — no cards, no icons, no chips — pure editorial */
+.features{padding:9rem 0;border-top:1px solid var(--line);background:var(--bg2);}
+.feat-intro{display:grid;grid-template-columns:1fr 1fr;gap:6rem;margin-bottom:6rem;align-items:end;}
+.feat-intro-r{font-family:'EB Garamond',serif;font-size:1.1rem;font-style:italic;line-height:1.85;color:var(--text2);}
+
+/* feature rows — alternating layout */
+.feat-rows{display:flex;flex-direction:column;gap:0;}
+.feat-row{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--line);padding:3.5rem 0;gap:4rem;align-items:center;transition:background .3s;}
+.feat-row:hover{background:var(--acg);}
+.feat-row.alt{direction:rtl;}
+.feat-row.alt>*{direction:ltr;}
+.feat-num{font-family:'EB Garamond',serif;font-size:.85rem;font-weight:400;color:var(--ac);letter-spacing:.1em;margin-bottom:1rem;}
+.feat-t{font-family:'EB Garamond',serif;font-size:clamp(1.5rem,2.5vw,2rem);font-weight:400;line-height:1.2;color:var(--text);margin-bottom:1.2rem;}
+.feat-t em{font-style:italic;color:var(--ac);}
+.feat-d{font-family:'EB Garamond',serif;font-size:1.05rem;font-weight:400;line-height:1.8;color:var(--text2);}
+
+/* the visual side of each feature — abstract typographic/geometric, not icon */
+.feat-visual{display:flex;align-items:center;justify-content:center;min-height:180px;position:relative;}
+.fv-inner{position:relative;width:100%;max-width:320px;}
+
+/* schedule visual — time slots as horizontal bars with varying widths */
+.fv-schedule{display:flex;flex-direction:column;gap:8px;}
+.fv-srow{display:flex;align-items:center;gap:10px;}
+.fv-stime{font-family:'EB Garamond',serif;font-size:.7rem;color:var(--text3);width:28px;flex-shrink:0;}
+.fv-sbar{height:22px;border-radius:1px;background:var(--bg3);position:relative;overflow:hidden;}
+.fv-sbar.filled{background:var(--acm);border:1px solid var(--line2);}
+.fv-sbar.now{background:var(--acm);border:1px solid var(--ac);box-shadow:0 0 12px rgba(78,160,110,.15);}
+.fv-sname{font-size:.65rem;font-weight:500;color:var(--text2);position:absolute;left:8px;top:50%;transform:translateY(-50%);white-space:nowrap;letter-spacing:.03em;}
+.fv-sname.ac{color:var(--ac);}
+
+/* payment visual — ledger lines */
+.fv-ledger{display:flex;flex-direction:column;gap:0;border:1px solid var(--line);}
+.fv-lrow{display:grid;grid-template-columns:1fr auto;gap:2rem;padding:.7rem 1rem;border-bottom:1px solid var(--line);align-items:center;}
+.fv-lrow:last-child{border-bottom:none;}
+.fv-lrow.head{background:var(--bg3);}
+.fv-lname{font-size:.7rem;font-weight:500;color:var(--text2);letter-spacing:.04em;}
+.fv-lname.dim{color:var(--text3);}
+.fv-lval{font-family:'EB Garamond',serif;font-size:.9rem;color:var(--text);}
+.fv-lval.ac{color:var(--ac);}
+.fv-lval.dim{color:var(--text3);}
+.fv-lpill{font-size:.58rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:.15rem .5rem;background:var(--acm);color:var(--ac);border-radius:1px;}
+
+/* prontuario visual — transcription block */
+.fv-note{background:var(--bg3);border:1px solid var(--line);padding:1.2rem 1.4rem;}
+.fv-note-head{font-size:.6rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--text3);margin-bottom:.8rem;display:flex;justify-content:space-between;}
+.fv-note-head span{color:var(--ac);}
+.fv-nline{height:7px;border-radius:.5px;background:var(--bg4);margin-bottom:6px;}
+.fv-nline.w80{width:80%;}
+.fv-nline.w60{width:60%;}
+.fv-nline.w90{width:90%;}
+.fv-nline.w45{width:45%;}
+.fv-nblock{margin-top:1rem;padding-top:1rem;border-top:1px solid var(--line);}
+.fv-nblock-label{font-size:.58rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--ac);margin-bottom:.5rem;}
+.fv-nline.ac{background:var(--acm);}
+
+/* analytics visual — large number with axis */
+.fv-analytics{text-align:center;padding:1rem;}
+.fv-an{font-family:'EB Garamond',serif;font-size:5rem;font-weight:400;line-height:1;color:var(--text);margin-bottom:.4rem;}
+.fv-albl{font-size:.62rem;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--ac);}
+.fv-arows{display:flex;flex-direction:column;gap:6px;margin-top:1.5rem;}
+.fv-arow{display:flex;align-items:center;gap:.7rem;}
+.fv-arlbl{font-size:.65rem;color:var(--text3);width:80px;flex-shrink:0;}
+.fv-artrack{flex:1;height:3px;background:var(--bg4);}
+.fv-arfill{height:100%;background:var(--ac);}
+.fv-arval{font-size:.65rem;color:var(--text2);min-width:32px;text-align:right;}
+
+/* PRICING — no cards, table-based editorial */
+.pricing{padding:9rem 0;border-top:1px solid var(--line);}
+.p-intro{display:grid;grid-template-columns:1fr 1fr;gap:6rem;margin-bottom:5rem;align-items:end;}
+.p-note{font-family:'EB Garamond',serif;font-size:1.05rem;font-style:italic;line-height:1.8;color:var(--text2);}
+.p-table{width:100%;border-collapse:collapse;border-top:1px solid var(--line2);}
+.p-table th{font-size:.62rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--text3);padding:1.2rem 1.5rem;border-bottom:1px solid var(--line);text-align:left;}
+.p-table th.ac{color:var(--ac);}
+.p-table td{padding:1rem 1.5rem;border-bottom:1px solid var(--line);font-family:'EB Garamond',serif;font-size:1rem;color:var(--text2);vertical-align:middle;line-height:1.5;}
+.p-table tr:last-child td{border-bottom:none;}
+.p-table tr:hover td{background:var(--acg);}
+.p-table .pname{font-size:.9rem;font-weight:500;color:var(--text);font-family:'Syne',sans-serif;letter-spacing:.02em;}
+.p-table .pprice{font-family:'EB Garamond',serif;font-size:1.5rem;color:var(--text);}
+.p-table .pprice.ac{color:var(--ac);}
+.p-table .porig{font-size:.8rem;color:var(--text3);text-decoration:line-through;display:block;}
+.p-table .pbadge{font-size:.58rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ac);border:1px solid var(--ac);border-radius:1px;padding:.15rem .5rem;display:inline-block;margin-left:.6rem;}
+.p-table .pbtn{font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;text-decoration:none;color:var(--text3);border-bottom:1px solid var(--line2);padding-bottom:.1rem;transition:color .2s,border-color .2s;white-space:nowrap;}
+.p-table .pbtn:hover{color:var(--ac);border-color:var(--ac);}
+.p-table .pbtn.pf{color:var(--ac);}
+.p-check{display:inline-block;width:10px;height:10px;border-radius:50%;background:var(--acm);border:1px solid var(--ac);}
+.p-dash{display:inline-block;width:12px;height:1px;background:var(--text3);}
+.p-guarantee{margin-top:2rem;font-family:'EB Garamond',serif;font-size:.95rem;font-style:italic;color:var(--text3);}
+
+/* WAITLIST */
+.waitlist{padding:10rem 0;border-top:1px solid var(--line);position:relative;overflow:hidden;}
+.wl-bg{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at 50% 100%,rgba(78,160,110,.07) 0%,transparent 65%);}
+.wl-layout{display:grid;grid-template-columns:1fr 1fr;gap:8rem;align-items:center;position:relative;z-index:1;}
+.wl-left{}
+.wl-right{}
+.spots-row{display:flex;align-items:center;gap:.8rem;margin-bottom:2.5rem;}
+.spots-pulse{width:6px;height:6px;border-radius:50%;background:#D46A5A;animation:pulse 1.6s ease-in-out infinite;}
+.spots-text{font-size:.65rem;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--text2);}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.wl-sub{font-family:'EB Garamond',serif;font-size:1.1rem;font-style:italic;line-height:1.85;color:var(--text2);margin-top:1.5rem;max-width:360px;}
+.wl-form{display:flex;flex-direction:column;gap:.8rem;}
+.wl-field{display:flex;flex-direction:column;gap:.4rem;}
+.wl-label{font-size:.6rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--text3);}
+.wl-input{font-family:'Syne',sans-serif;font-size:.85rem;font-weight:400;padding:.85rem 1rem;border-radius:1px;border:1px solid var(--line2);background:var(--bg2);color:var(--text);outline:none;transition:border-color .25s,box-shadow .25s;}
+.wl-input::placeholder{color:var(--text3);}
+.wl-input:focus{border-color:var(--ac);box-shadow:0 0 0 3px rgba(78,160,110,.07);}
+.wl-submit{font-family:'Syne',sans-serif;font-size:.72rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:.9rem;border-radius:1px;border:none;background:var(--ac);color:var(--bg);transition:background .2s,transform .2s,box-shadow .2s;margin-top:.4rem;box-shadow:0 0 32px rgba(78,160,110,.12);}
+.wl-submit:hover{background:var(--ac2);transform:translateY(-2px);box-shadow:0 0 50px rgba(78,160,110,.25);}
+.wl-privacy{font-size:.65rem;color:var(--text3);margin-top:.8rem;line-height:1.6;}
+#wl-ok{display:none;font-family:'EB Garamond',serif;font-size:1.4rem;font-style:italic;color:var(--ac);line-height:1.7;}
+
+/* FOOTER */
+footer{padding:2rem 4.5rem;display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--line);}
+.f-logo{font-family:'EB Garamond',serif;font-size:1.15rem;letter-spacing:.04em;color:var(--text);}
+.f-logo i{color:var(--ac);font-style:italic;}
+.f-r{display:flex;gap:2.5rem;align-items:center;}
+.f-copy{font-size:.65rem;color:var(--text3);letter-spacing:.06em;}
+
+/* REVEAL */
+.rv{opacity:0;transform:translateY(24px);transition:opacity .9s var(--ease),transform .9s var(--ease);}
+.rv.vis{opacity:1;transform:none;}
+.rv2{opacity:0;transform:translateY(18px);transition:opacity .9s var(--ease) .12s,transform .9s var(--ease) .12s;}
+.rv2.vis{opacity:1;transform:none;}
+.rv3{opacity:0;transition:opacity .9s var(--ease) .24s;}
+.rv3.vis{opacity:1;}
+
+@media(max-width:960px){
+  nav{padding:1.2rem 2rem;}
+  .nav-links{display:none;}
+  .hero{padding:0 2rem 5rem;}
+  .hero-h1 .ind{padding-left:0;}
+  .mission-line{display:none;}
+  .wrap,.meaning,.pain,.pricing{padding-left:2rem;padding-right:2rem;}
+  .meaning,.feat-intro,.p-intro,.wl-layout{grid-template-columns:1fr;}
+  .pain-layout{grid-template-columns:1fr;}
+  .feat-row{grid-template-columns:1fr;}
+  .feat-row.alt{direction:ltr;}
+  .p-table th:nth-child(n+3),.p-table td:nth-child(n+3){display:none;}
+  footer{flex-direction:column;gap:1rem;padding:2rem;}
+}
+</style>
+</head>
+<body>
+
+<div id="cd"></div>
+<div id="cr"></div>
+
+<!-- NAV -->
+<nav id="nav">
+  <div class="logo">Psi<i>v</i>e</div>
+  <div class="nav-r">
+    <div class="nav-links">
+      <a href="#missao">A missão</a>
+      <a href="#funciona">Como funciona</a>
+      <a href="#planos">Planos</a>
+    </div>
+    <button class="tbtn" onclick="toggleTheme()" id="tlbl">Modo claro</button>
+    <a href="#lista" class="ncta">Entrar na lista</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="vrules">
+    <div class="vrule"></div><div class="vrule"></div>
+    <div class="vrule"></div><div class="vrule"></div>
+    <div class="vrule"></div>
+  </div>
+  <div class="orb o1"></div>
+  <div class="orb o2"></div>
+
+  <div class="mission-line">
+    <div class="mission-rule"></div>
+    <p class="mission-text">Psi<span class="mission-word">ve</span> — do latim. <em>Psicologia viva.</em> Um nome criado para quem acredita que cuidar de pessoas é o trabalho mais vivo que existe — e merece uma ferramenta à altura.</p>
+  </div>
+
+  <span class="hero-eyebrow">Sistema operacional para psicólogos autônomos</span>
+  <h1 class="hero-h1">
+    Você cuida<br>
+    <span class="ind">das pessoas.</span><br>
+    Nós cuidamos<br>
+    <span class="ind">do <em>resto.</em></span>
+  </h1>
+
+  <div class="hero-bottom">
+    <p class="hero-sub">Agenda, cobrança automática e prontuário com inteligência artificial — tudo num único lugar construído exclusivamente para psicólogos que operam sozinhos e querem a estrutura de uma clínica.</p>
+    <div>
+      <div class="hero-actions" style="margin-bottom:1.6rem;">
+        <a href="#lista" class="btnp">Garantir vaga fundadora</a>
+        <a href="#missao" class="btng">A nossa missão</a>
+      </div>
+      <div class="scroll-hint">
+        <div class="sh-line"></div>
+        Continuar lendo
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MEANING / MISSÃO -->
+<section class="meaning" id="missao">
+  <div class="meaning-left rv">
+    <div class="meaning-label">A marca</div>
+    <div class="meaning-word">Psive</div>
+    <div class="meaning-phonetic">/ psi·'ve /</div>
+    <div class="meaning-def">
+      <div class="def-row">
+        <div class="def-num">lat.</div>
+        <div class="def-text"><em>Eu curei.</em> Primeira pessoa do singular do perfeito ativo do verbo latino <em>vivere</em> — cuidar, tratar, zelar.</div>
+      </div>
+      <div class="def-row">
+        <div class="def-num">missão</div>
+        <div class="def-text">Devolver ao psicólogo autônomo o que ele mais perde no dia a dia: <em>tempo, clareza e presença</em> para cuidar de quem realmente importa.</div>
+      </div>
+      <div class="def-row">
+        <div class="def-num">crença</div>
+        <div class="def-text">Uma prática viva começa com uma gestão <em>que também vive.</em></div>
+      </div>
+    </div>
+  </div>
+  <div class="meaning-right rv2">
+    <div class="meaning-mission">
+      <div class="mm-title">Nossa missão</div>
+      <p class="mm-p">O psicólogo autônomo no Brasil não tem um problema de competência. Ele tem um problema de <em>estrutura.</em></p>
+      <p class="mm-p">Treina anos para cuidar de pessoas. Depois gasta horas por semana gerenciando agenda no WhatsApp, lembrando de cobrar, escrevendo prontuário à mão.</p>
+      <p class="mm-p">O Psive existe para encerrar esse ciclo. Para que o único trabalho de um psicólogo seja, de fato, <em>cuidar.</em></p>
+      <div class="mm-rule"></div>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="mq-wrap">
+  <div class="mq-track">
+    <span class="mq-item">Agenda inteligente</span><div class="mq-sep"></div>
+    <span class="mq-item">Cobrança automática</span><div class="mq-sep"></div>
+    <span class="mq-item">Prontuário com IA</span><div class="mq-sep"></div>
+    <span class="mq-item">Relatório de evolução</span><div class="mq-sep"></div>
+    <span class="mq-item">Analytics do consultório</span><div class="mq-sep"></div>
+    <span class="mq-item">Agente de retenção</span><div class="mq-sep"></div>
+    <span class="mq-item">Agenda inteligente</span><div class="mq-sep"></div>
+    <span class="mq-item">Cobrança automática</span><div class="mq-sep"></div>
+    <span class="mq-item">Prontuário com IA</span><div class="mq-sep"></div>
+    <span class="mq-item">Relatório de evolução</span><div class="mq-sep"></div>
+    <span class="mq-item">Analytics do consultório</span><div class="mq-sep"></div>
+    <span class="mq-item">Agente de retenção</span><div class="mq-sep"></div>
+  </div>
+</div>
+
+<!-- DOR -->
+<section class="pain" id="dores">
+  <div class="wrap">
+    <span class="slabel rv">O problema real</span>
+    <h2 class="sh rv">Você foi treinado para<br>cuidar de pessoas.<br><em>Não para administrar.</em></h2>
+    <div class="pain-layout">
+      <div class="rv2">
+        <p class="pain-aside">Cada hora gasta com gestão é uma hora subtraída de quem mais precisa de você.</p>
+      </div>
+      <div class="pain-items rv">
+        <div class="pain-item">
+          <div class="pain-n">01</div>
+          <div class="pain-body">
+            <div class="pain-t">A agenda que vive no WhatsApp</div>
+            <p class="pain-d">Confirmações manuais, reagendamentos perdidos, no-shows sem aviso. Cada sessão que escapa é receita que some — e energia desperdiçada em conversas que poderiam ser automáticas.</p>
+          </div>
+        </div>
+        <div class="pain-item">
+          <div class="pain-n">02</div>
+          <div class="pain-body">
+            <div class="pain-t">O prontuário que devora o seu tempo</div>
+            <p class="pain-d">Vinte minutos de anotação por sessão. Vinte pacientes por semana. São mais de seis horas mensais que poderiam ser de atendimento, de estudo ou simplesmente de descanso.</p>
+          </div>
+        </div>
+        <div class="pain-item">
+          <div class="pain-n">03</div>
+          <div class="pain-body">
+            <div class="pain-t">A cobrança que ninguém gosta de fazer</div>
+            <p class="pain-d">Cobrar pelo próprio trabalho deveria ser simples. Em vez disso, vira uma conversa desconfortável — e muitas vezes o dinheiro simplesmente não entra. Isso não é normal. É evitável.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="features" id="funciona">
+  <div class="wrap">
+    <div class="feat-intro">
+      <div>
+        <span class="slabel rv">Como o Psive funciona</span>
+        <h2 class="sh rv">Uma clínica inteira<br>numa única<br><em>ferramenta.</em></h2>
+      </div>
+      <div class="rv2">
+        <p class="feat-intro-r">Cada funcionalidade foi projetada para eliminar uma tarefa administrativa específica da vida do psicólogo autônomo — sem complexidade, sem curva de aprendizado.</p>
+      </div>
+    </div>
+
+    <div class="feat-rows">
+
+      <!-- 01 agenda -->
+      <div class="feat-row rv">
+        <div>
+          <div class="feat-num">01</div>
+          <h3 class="feat-t">Agenda com<br><em>link próprio</em></h3>
+          <p class="feat-d">O paciente acessa sua URL exclusiva, escolhe o horário e confirma. O Psive envia lembretes automáticos 24 horas antes e cobra antes da sessão. Sem WhatsApp, sem planilha, sem você no meio.</p>
+        </div>
+        <div class="feat-visual">
+          <div class="fv-inner">
+            <div class="fv-schedule">
+              <div class="fv-srow"><span class="fv-stime">08h</span><div class="fv-sbar filled" style="flex:1;"><span class="fv-sname">Mariana A.</span></div></div>
+              <div class="fv-srow"><span class="fv-stime">09h</span><div class="fv-sbar" style="flex:1;"></div></div>
+              <div class="fv-srow"><span class="fv-stime">10h</span><div class="fv-sbar filled" style="flex:1;"><span class="fv-sname">Rafael S.</span></div></div>
+              <div class="fv-srow"><span class="fv-stime">11h</span><div class="fv-sbar now" style="flex:1;"><span class="fv-sname ac">Juliana M. — agora</span></div></div>
+              <div class="fv-srow"><span class="fv-stime">14h</span><div class="fv-sbar filled" style="flex:.8;"><span class="fv-sname">Pedro L.</span></div></div>
+              <div class="fv-srow"><span class="fv-stime">15h</span><div class="fv-sbar" style="flex:1;"></div></div>
+              <div class="fv-srow"><span class="fv-stime">16h</span><div class="fv-sbar filled" style="flex:.6;"><span class="fv-sname">Ana C.</span></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 02 cobrança -->
+      <div class="feat-row alt rv">
+        <div>
+          <div class="feat-num">02</div>
+          <h3 class="feat-t">Cobrança que<br><em>acontece sozinha</em></h3>
+          <p class="feat-d">Pix, cartão ou boleto — o pagamento é feito antes da sessão pelo link. Inadimplente recebe lembrete automático. Você nunca mais precisará iniciar uma conversa sobre dinheiro.</p>
+        </div>
+        <div class="feat-visual">
+          <div class="fv-inner">
+            <div class="fv-ledger">
+              <div class="fv-lrow head">
+                <div class="fv-lname">Outubro 2025</div>
+                <div class="fv-lval ac">R$ 7.200</div>
+              </div>
+              <div class="fv-lrow">
+                <div class="fv-lname">Mariana A. <span class="fv-lpill">pago</span></div>
+                <div class="fv-lval">R$ 240</div>
+              </div>
+              <div class="fv-lrow">
+                <div class="fv-lname">Rafael S. <span class="fv-lpill">pago</span></div>
+                <div class="fv-lval">R$ 240</div>
+              </div>
+              <div class="fv-lrow">
+                <div class="fv-lname dim">Pedro L.</div>
+                <div class="fv-lval dim">aguardando</div>
+              </div>
+              <div class="fv-lrow">
+                <div class="fv-lname">Juliana M. <span class="fv-lpill">pago</span></div>
+                <div class="fv-lval">R$ 240</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 03 prontuário -->
+      <div class="feat-row rv">
+        <div>
+          <div class="feat-num">03</div>
+          <h3 class="feat-t">Prontuário com IA —<br><em>fale, ela organiza</em></h3>
+          <p class="feat-d">Após a sessão, dite suas anotações livremente. A inteligência artificial estrutura tudo: queixa principal, intervenções, estado emocional, plano para a próxima sessão. Gera o relatório mensal de evolução em PDF — pronto para arquivo ou envio.</p>
+        </div>
+        <div class="feat-visual">
+          <div class="fv-inner">
+            <div class="fv-note">
+              <div class="fv-note-head">
+                <span>Prontuário · sessão 14</span>
+                <span>IA estruturou</span>
+              </div>
+              <div class="fv-nline w90"></div>
+              <div class="fv-nline w80"></div>
+              <div class="fv-nline w60"></div>
+              <div class="fv-nblock">
+                <div class="fv-nblock-label">Queixa principal</div>
+                <div class="fv-nline w80 ac"></div>
+                <div class="fv-nline w60 ac"></div>
+              </div>
+              <div class="fv-nblock">
+                <div class="fv-nblock-label">Plano — próxima sessão</div>
+                <div class="fv-nline w90 ac"></div>
+                <div class="fv-nline w45 ac"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 04 analytics -->
+      <div class="feat-row alt rv">
+        <div>
+          <div class="feat-num">04</div>
+          <h3 class="feat-t">O consultório<br><em>em números</em></h3>
+          <p class="feat-d">Receita projetada, taxa de churn de pacientes, horários mais rentáveis e valor por paciente ao longo do tempo. Dados que transformam intuição em decisão fundamentada.</p>
+        </div>
+        <div class="feat-visual">
+          <div class="fv-inner">
+            <div class="fv-analytics">
+              <div class="fv-an">R$7,2k</div>
+              <div class="fv-albl">Receita — outubro</div>
+              <div class="fv-arows">
+                <div class="fv-arow"><span class="fv-arlbl">Pacientes ativos</span><div class="fv-artrack"><div class="fv-arfill" style="width:82%"></div></div><span class="fv-arval">24</span></div>
+                <div class="fv-arow"><span class="fv-arlbl">Taxa de retenção</span><div class="fv-artrack"><div class="fv-arfill" style="width:91%"></div></div><span class="fv-arval">91%</span></div>
+                <div class="fv-arow"><span class="fv-arlbl">Sessões realizadas</span><div class="fv-artrack"><div class="fv-arfill" style="width:76%"></div></div><span class="fv-arval">30</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- PLANOS -->
+<section class="pricing" id="planos">
+  <div class="wrap">
+    <div class="p-intro">
+      <div>
+        <span class="slabel rv">Planos</span>
+        <h2 class="sh rv">Preço de lançamento.<br><em>Travado para sempre.</em></h2>
+      </div>
+      <div class="rv2">
+        <p class="p-note">Os primeiros 100 assinantes travam o preço de lançamento para sempre — mesmo quando o preço cheio entrar. Garantia incondicional de 30 dias.</p>
+      </div>
+    </div>
+
+    <table class="p-table rv">
+      <thead>
+        <tr>
+          <th>Plano</th>
+          <th>Lançamento</th>
+          <th class="ac">Básico</th>
+          <th class="ac">Pro</th>
+          <th class="ac">Clínica</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td></td>
+          <td></td>
+          <td>
+            <span class="pprice">R$55</span>
+            <span class="porig">depois R$99/mês</span>
+          </td>
+          <td>
+            <span class="pprice ac">R$104</span><span class="pbadge">popular</span>
+            <span class="porig">depois R$199/mês</span>
+          </td>
+          <td>
+            <span class="pprice">R$209</span>
+            <span class="porig">depois R$399/mês</span>
+          </td>
+        </tr>
+        <tr>
+          <td class="pname">Agenda com link próprio</td>
+          <td></td>
+          <td><span class="p-check"></span></td>
+          <td><span class="p-check"></span></td>
+          <td><span class="p-check"></span></td>
+        </tr>
+        <tr>
+          <td class="pname">Cobrança automática</td>
+          <td></td>
+          <td><span class="p-check"></span></td>
+          <td><span class="p-check"></span></td>
+          <td><span class="p-check"></span></td>
+        </tr>
+        <tr>
+          <td class="pname">Pacientes ativos</td>
+          <td></td>
+          <td>Até 30</td>
+          <td>Ilimitados</td>
+          <td>Ilimitados</td>
+        </tr>
+        <tr>
+          <td class="pname">Prontuário com IA</td>
+          <td></td>
+          <td><span class="p-dash"></span></td>
+          <td><span class="p-check"></span></td>
+          <td><span class="p-check"></span></td>
+        </tr>
+        <tr>
+          <td class="pname">Relatório de evolução em PDF</td>
+          <td></td>
+          <td><span class="p-dash"></span></td>
+          <td><span class="p-check"></span></td>
+          <td><span class="p-check"></span></td>
+        </tr>
+        <tr>
+          <td class="pname">Agente de retenção</td>
+          <td></td>
+          <td><span class="p-dash"></span></td>
+          <td><span class="p-check"></span></td>
+          <td><span class="p-check"></span></td>
+        </tr>
+        <tr>
+          <td class="pname">Analytics do consultório</td>
+          <td></td>
+          <td><span class="p-dash"></span></td>
+          <td><span class="p-check"></span></td>
+          <td><span class="p-check"></span></td>
+        </tr>
+        <tr>
+          <td class="pname">Múltiplos psicólogos</td>
+          <td></td>
+          <td><span class="p-dash"></span></td>
+          <td><span class="p-dash"></span></td>
+          <td>Até 5</td>
+        </tr>
+        <tr>
+          <td class="pname">Dashboard unificado da clínica</td>
+          <td></td>
+          <td><span class="p-dash"></span></td>
+          <td><span class="p-dash"></span></td>
+          <td><span class="p-check"></span></td>
+        </tr>
+        <tr>
+          <td></td>
+          <td></td>
+          <td><a href="#lista" class="pbtn">Começar</a></td>
+          <td><a href="#lista" class="pbtn pf">Garantir Pro</a></td>
+          <td><a href="#lista" class="pbtn">Conhecer</a></td>
+        </tr>
+      </tbody>
+    </table>
+    <p class="p-guarantee rv2">Garantia de 30 dias — cancelamento sem perguntas, reembolso integral.</p>
+  </div>
+</section>
+
+<!-- LISTA DE ESPERA -->
+<section class="waitlist" id="lista">
+  <div class="wl-bg"></div>
+  <div class="wrap">
+    <div class="wl-layout">
+      <div class="wl-left rv">
+        <div class="spots-row">
+          <div class="spots-pulse"></div>
+          <span class="spots-text">23 vagas fundadoras restantes</span>
+        </div>
+        <span class="slabel">Acesso antecipado</span>
+        <h2 class="sh">Seja um dos 50<br>psicólogos<br><em>fundadores.</em></h2>
+        <p class="wl-sub">Plano Pro por R$79/mês para sempre — travado vitalício. Em troca, sua opinião vai moldar o Psive nos primeiros 60 dias.</p>
+      </div>
+      <div class="wl-right rv2">
+        <form class="wl-form" id="wlf" onsubmit="handleForm(event)" novalidate>
+          <div class="wl-field">
+            <label class="wl-label" for="wl-n">Nome completo</label>
+            <input class="wl-input" type="text" id="wl-n" placeholder="Dra. Ana Souza" autocomplete="name" maxlength="100" required>
+          </div>
+          <div class="wl-field">
+            <label class="wl-label" for="wl-e">E-mail profissional</label>
+            <input class="wl-input" type="email" id="wl-e" placeholder="ana@consultorio.com.br" autocomplete="email" maxlength="254" required>
+          </div>
+          <div class="wl-field">
+            <label class="wl-label" for="wl-p">WhatsApp (opcional)</label>
+            <input class="wl-input" type="tel" id="wl-p" placeholder="(11) 99999-9999" autocomplete="tel" maxlength="20">
+          </div>
+          <button type="submit" class="wl-submit">Garantir minha vaga fundadora</button>
+          <p class="wl-privacy">Seus dados são protegidos pela LGPD e jamais serão compartilhados ou usados para spam.</p>
+        </form>
+        <div id="wl-ok">Perfeito. Você está dentro.<br>Entraremos em contato em breve.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="f-logo">Psi<i>v</i>e</div>
+  <div class="f-r">
+    <span class="f-copy">© 2025 Psive — LGPD · Privacidade</span>
+  </div>
+</footer>
+
+<script>
+/* CURSOR JELLYFISH */
+(function(){
+  const d=document.getElementById('cd'),r=document.getElementById('cr');
+  let mx=-300,my=-300,rx=-300,ry=-300;
+  const N=22,trail=[];
+  for(let i=0;i<N;i++){
+    const el=document.createElement('div');el.className='tr';
+    const ratio=1-i/N,sz=Math.max(2,Math.round(10*ratio));
+    el.style.cssText=`width:${sz}px;height:${sz}px;opacity:${(ratio*.42).toFixed(2)};`;
+    document.body.appendChild(el);trail.push({el,x:-300,y:-300});
+  }
+  document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;});
+  (function loop(){
+    d.style.left=mx+'px';d.style.top=my+'px';
+    rx+=(mx-rx)*.09;ry+=(my-ry)*.09;
+    r.style.left=rx+'px';r.style.top=ry+'px';
+    let px=mx,py=my;
+    for(let i=0;i<N;i++){
+      const t=trail[i],f=.28-i*.011;
+      t.x+=(px-t.x)*f;t.y+=(py-t.y)*f;
+      t.el.style.left=t.x+'px';t.el.style.top=t.y+'px';
+      px=t.x;py=t.y;
+    }
+    requestAnimationFrame(loop);
+  })();
+  document.querySelectorAll('a,button,input').forEach(el=>{
+    el.addEventListener('mouseenter',()=>{
+      d.style.transform='translate(-50%,-50%) scale(2.8)';
+      r.style.width='48px';r.style.height='48px';
+      r.style.borderColor='rgba(78,160,110,.55)';
+    });
+    el.addEventListener('mouseleave',()=>{
+      d.style.transform='translate(-50%,-50%) scale(1)';
+      r.style.width='28px';r.style.height='28px';
+      r.style.borderColor='rgba(78,160,110,.3)';
+    });
+  });
+})();
+
+/* NAV SCROLL */
+window.addEventListener('scroll',()=>{
+  document.getElementById('nav').classList.toggle('s',window.scrollY>50);
+},{ passive:true });
+
+/* THEME */
+function toggleTheme(){
+  const h=document.documentElement;
+  const isDark=h.getAttribute('data-theme')==='dark';
+  h.setAttribute('data-theme',isDark?'light':'dark');
+  document.getElementById('tlbl').textContent=isDark?'Modo escuro':'Modo claro';
+}
+
+/* REVEAL */
+(function(){
+  const io=new IntersectionObserver(entries=>entries.forEach(e=>{
+    if(e.isIntersecting){e.target.classList.add('vis');io.unobserve(e.target);}
+  }),{threshold:.07});
+  document.querySelectorAll('.rv,.rv2,.rv3').forEach(el=>io.observe(el));
+})();
+
+/* FORM */
+function san(s){
+  return String(s).replace(/[<>"'&]/g,c=>({'<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#x27;','&':'&amp;'}[c]));
+}
+function handleForm(e){
+  e.preventDefault();
+  const name=san(document.getElementById('wl-n').value.trim());
+  const email=document.getElementById('wl-e').value.trim();
+  const phone=san(document.getElementById('wl-p').value.trim());
+  if(!name||name.length<2){alert('Por favor, informe seu nome.');return;}
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)){alert('E-mail inválido.');return;}
+  if(phone&&!/^[\d\s+\-()]{6,20}$/.test(phone)){alert('Telefone inválido.');return;}
+  document.getElementById('wlf').style.display='none';
+  document.getElementById('wl-ok').style.display='block';
+}
+</script>
+</body>
+</html>
